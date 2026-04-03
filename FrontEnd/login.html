@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="page">
+
+    <div class="card">
+
+      <div class="card__header">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#1e293b" stroke-width="1.5"/>
+            <path d="M8 12h8M12 8v8" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1 class="card__title">Bem-vindo de volta</h1>
+        <p class="card__subtitle">Acesse sua conta para continuar</p>
+      </div>
+
+      <div class="card__body">
+
+        <div class="field">
+          <label class="field__label" for="username">Usuário</label>
+          <input class="field__input" type="text" id="username" placeholder="Digite seu usuário" />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="email">Email</label>
+          <input class="field__input" type="email" id="email" placeholder="Digite seu email" />
+        </div>
+
+        <button class="btn-primary" onclick="handleLogin()">
+          Entrar
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <p class="msg" id="msg"></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function handleLogin() {
+      const user = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const msg = document.getElementById('msg');
+
+      if (!user || !email) {
+        msg.textContent = 'Preencha todos os campos.';
+        msg.className = 'msg msg--error';
+        return;
+      }
+
+      msg.textContent = 'Verificando...';
+      msg.className = 'msg msg--neutral';
+
+      setTimeout(() => {
+        msg.textContent = 'Acesso realizado com sucesso.';
+        msg.className = 'msg msg--success';
+      }, 900);
+    }
+
+
+    async function enviar() {
+        const user = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+
+        const res = await 
+        fetch("http://localhost:3000/user")
+    }
+  </script>
+
+</body>
+</html>

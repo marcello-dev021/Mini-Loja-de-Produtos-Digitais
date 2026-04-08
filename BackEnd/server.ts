@@ -1,23 +1,23 @@
 
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
+import express from 'express'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-
-
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 const prisma = new PrismaClient({ adapter })
 
-
 const app = express()
 
-
-
-
 app.use(express.json())
+app.use(express.static(path.join(__dirname, '../FrontEnd')))
 
 app.get("/user", async (req, res) => {
     const users = await prisma.user.findMany()

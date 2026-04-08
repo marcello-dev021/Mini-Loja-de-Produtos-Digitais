@@ -68,19 +68,27 @@
       msg.textContent = 'Verificando...';
       msg.className = 'msg msg--neutral';
 
-      setTimeout(() => {
-        msg.textContent = 'Acesso realizado com sucesso.';
-        msg.className = 'msg msg--success';
-      }, 900);
-    }
-
-
-    async function enviar() {
-        const user = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
-
-        const res = await 
-        fetch("http://localhost:3000/user")
+      fetch('http://localhost:3000/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: user, email: email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.mesg) {
+          msg.textContent = 'Usuário criado com sucesso.';
+          msg.className = 'msg msg--success';
+        } else if (data.error) {
+          msg.textContent = data.error;
+          msg.className = 'msg msg--error';
+        }
+      })
+      .catch(error => {
+        msg.textContent = 'Erro ao conectar.';
+        msg.className = 'msg msg--error';
+      });
     }
   </script>
 

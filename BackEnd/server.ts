@@ -1,53 +1,51 @@
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client";
 
-import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '@prisma/client'
-import express from 'express'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import express from "express";
+import path from "path";
 
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
-const prisma = new PrismaClient({ adapter })
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const app = express()
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
 
-app.use(express.json())
-app.use(express.static(path.join(__dirname, '../FrontEnd')))
+const app = express();
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "../FrontEnd")));
 
 app.get("/user", async (req, res) => {
-    const users = await prisma.user.findMany()
+  const users = await prisma.user.findMany();
 
-    res.json(users)
-})
+  res.json(users);
+});
 
 app.post("/user", async (req, res) => {
-    const { name, email } = req.body
+    
+  const { name, email } = req.body;
 
-    if (!name || !email) {
-        return res.status(400).json({ error: "Nome e email são obrigatórios" })
-    }
-    const userNew = await prisma.user.create({
+  if (!name || !email) {
+    return res.status(400).json({ error: "Nome e email são obrigatórios" });
+  }
+  const userNew = await prisma.user.create({
+    data: {
+      name: name,
+      email: email,
+    },
+  });
 
-        data: {
-            name: name,
-            email: email
-        }
-
-    })
-
-
-    res.status(201).json({
-        mesg: "USUARIO CRIADO",
-        data: userNew
-    })
-})
-
+  res.status(201).json({
+    mesg: "USUARIO CRIADO",
+    data: userNew,
+  });
+});
 
 app.listen(3000, () => {
-    console.log("rota localhost:3000/user ")
-})
+  console.log("rota localhost:3000/user ");
+});
